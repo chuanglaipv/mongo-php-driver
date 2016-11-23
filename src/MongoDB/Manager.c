@@ -430,9 +430,15 @@ static char *php_phongo_make_subscriber_hash(zval *subscriber TSRMLS_DC)
 PHP_METHOD(Manager, addSubscriber)
 {
 	php_phongo_manager_t         *intern;
-	SUPPRESS_UNUSED_WARNING(return_value_ptr) SUPPRESS_UNUSED_WARNING(return_value_used)
 	zval                         *zSubscriber = NULL;
 	char                         *hash;
+#if PHP_VERSION_ID >= 70000
+	zval *subscriber;
+#else
+	zval **subscriber;
+#endif
+
+	SUPPRESS_UNUSED_WARNING(return_value_ptr) SUPPRESS_UNUSED_WARNING(return_value_used)
 
 	intern = Z_MANAGER_OBJ_P(getThis());
 
@@ -445,16 +451,12 @@ PHP_METHOD(Manager, addSubscriber)
 	/* If we have already stored the subscriber, bail out. Otherwise, add
 	 * subscriber to list */
 #if PHP_VERSION_ID >= 70000
-	zval *subscriber;
-
 	if (subscriber = zend_hash_str_find(&intern->subscribers, hash, sizeof(hash)-1)) {
 		return;
 	}
 
 	zend_hash_str_update(&intern->subscribers, hash, sizeof(hash)-1, zSubscriber);
 #else
-	zval **subscriber;
-
 	if (zend_hash_find(&intern->subscribers, hash, sizeof(hash), (void**) &subscriber) == SUCCESS) {
 		return;
 	}
@@ -471,9 +473,9 @@ PHP_METHOD(Manager, addSubscriber)
 PHP_METHOD(Manager, removeSubscriber)
 {
 	php_phongo_manager_t         *intern;
-	SUPPRESS_UNUSED_WARNING(return_value_ptr) SUPPRESS_UNUSED_WARNING(return_value_used)
 	zval                         *zSubscriber = NULL;
 	char                         *hash;
+	SUPPRESS_UNUSED_WARNING(return_value_ptr) SUPPRESS_UNUSED_WARNING(return_value_used)
 
 	intern = Z_MANAGER_OBJ_P(getThis());
 

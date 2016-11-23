@@ -142,7 +142,6 @@ HashTable *php_phongo_commandstartedevent_get_debug_info(zval *object, int *is_t
 #else
 	zval                      retval = zval_used_for_init;
 #endif
-	bson_iter_t iter, child;
 
 	intern = Z_COMMANDSTARTEDEVENT_OBJ_P(object);
 	*is_temp = 1;
