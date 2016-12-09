@@ -55,13 +55,13 @@ ZEND_EXTERN_MODULE_GLOBALS(mongodb)
 ZEND_TSRMLS_CACHE_EXTERN()
 # endif
 #else
-#   ifdef ZTS
-#   	define MONGODB_G(v) TSRMG(mongodb_globals_id, zend_mongodb_globals *, v)
-#   	define mglo mongodb_globals_id
-#   else
-#   	define MONGODB_G(v) (mongodb_globals.v)
-#   	define mglo mongodb_globals
-#   endif
+# ifdef ZTS
+#  define MONGODB_G(v) TSRMG(mongodb_globals_id, zend_mongodb_globals *, v)
+#  define mglo mongodb_globals_id
+# else
+#  define MONGODB_G(v) (mongodb_globals.v)
+#  define mglo mongodb_globals
+# endif
 #endif
 
 #define PHONGO_WRITE_CONCERN_W_MAJORITY "majority"
